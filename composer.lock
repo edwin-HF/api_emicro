@@ -1,0 +1,66 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "This file is @generated automatically"
+    ],
+    "content-hash": "555de9f1ab898c12eb95238b40ca8cc5",
+    "packages": [
+        {
+            "name": "edv/orm",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/edwin-HF/orm.git",
+                "reference": "98b365e32ba1190e17525015290b106df18eabd8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/edwin-HF/orm/zipball/98b365e32ba1190e17525015290b106df18eabd8",
+                "reference": "98b365e32ba1190e17525015290b106df18eabd8",
+                "shasum": "",
+                "mirrors": [
+                    {
+                        "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
+                        "preferred": true
+                    }
+                ]
+            },
+            "require": {
+                "ext-pdo": "*",
+                "ext-pdo_mysql": "*"
+            },
+            "default-branch": true,
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Edv\\Orm\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "authors": [
+                {
+                    "name": "edwin",
+                    "email": "edwin.fan@foxmail.com"
+                }
+            ],
+            "description": "simple orm",
+            "support": {
+                "issues": "https://github.com/edwin-HF/orm/issues",
+                "source": "https://github.com/edwin-HF/orm/tree/master"
+            },
+            "time": "2022-03-07T10:17:00+00:00"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": {
+        "edv/orm": 20
+    },
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": [],
+    "platform-dev": [],
+    "plugin-api-version": "2.0.0"
+}

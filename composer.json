@@ -1,0 +1,13 @@
+{
+    "name": "edv/api-emicro",
+    "type": "project",
+    "authors": [
+        {
+            "name": "EdwinFan",
+            "email": "edwin.fan@foxmail.com"
+        }
+    ],
+    "require": {
+        "edv/orm": "dev-master"
+    }
+}
