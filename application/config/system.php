@@ -1,6 +1,6 @@
 <?php
 
 return [
-    'media_domain' => 'http://craft.emicro.top',
+    'media_domain' => '',
     'page_size'    => 12
 ];

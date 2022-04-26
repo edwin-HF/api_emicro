@@ -3,9 +3,9 @@
 return [
     'driver'    => 'mysql',
     'host'      => '127.0.0.1',
-    'database'  => 'craft',
+    'database'  => 'database',
     'username'  => 'root',
-    'password'  => '!1q@2w#3e$',
+    'password'  => 'root',
     //'charset'   => 'utf8',
     'prefix'    => '',
 ];

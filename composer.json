@@ -8,6 +8,7 @@
         }
     ],
     "require": {
-        "edv/orm": "dev-master"
+        "edv/orm": "dev-master",
+        "edv/cache": "dev-master"
     }
 }

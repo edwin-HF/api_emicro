@@ -4,8 +4,46 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "555de9f1ab898c12eb95238b40ca8cc5",
+    "content-hash": "7389ae34fdff1554dc79d15c624ac2df",
     "packages": [
+        {
+            "name": "edv/cache",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/edwin-HF/cache.git",
+                "reference": "b985bb1e47b44225c65ed0f69c8d2f9b7c2af6dd"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/edwin-HF/cache/zipball/b985bb1e47b44225c65ed0f69c8d2f9b7c2af6dd",
+                "reference": "b985bb1e47b44225c65ed0f69c8d2f9b7c2af6dd",
+                "shasum": ""
+            },
+            "require": {
+                "ext-redis": "*"
+            },
+            "default-branch": true,
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Edv\\Cache\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "authors": [
+                {
+                    "name": "edwin",
+                    "email": "edwin.fan@foxmail.com"
+                }
+            ],
+            "description": "redis cache (read/write through)",
+            "support": {
+                "issues": "https://github.com/edwin-HF/cache/issues",
+                "source": "https://github.com/edwin-HF/cache/tree/master"
+            },
+            "time": "2022-03-16T03:56:51+00:00"
+        },
         {
             "name": "edv/orm",
             "version": "dev-master",
@@ -56,7 +94,8 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "edv/orm": 20
+        "edv/orm": 20,
+        "edv/cache": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,
