@@ -9,6 +9,10 @@
     ],
     "require": {
         "edv/orm": "dev-master",
+        "lcobucci/jwt": "3.4.5",
+        "ext-openssl": "*",
+        "ext-json": "*",
+        "guzzlehttp/guzzle": "^7.4",
         "edv/cache": "dev-master"
     }
 }
