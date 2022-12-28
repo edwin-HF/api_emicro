@@ -7,6 +7,11 @@ namespace util;
 class Helper
 {
 
+    public const DURATION_UNIT_MINUTE = 'minutes';
+    public const DURATION_UNIT_DAY    = 'days';
+    public const DURATION_UNIT_YEAR   = 'years';
+    public const DURATION_UNIT_MONTH  = 'months';
+
     public static function verifyCode($length = 6){
         $pool='0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
         $code = '';
@@ -54,30 +59,37 @@ class Helper
         return $prefix . $uuid ;
     }
 
-    public static function arrMapGroup($arr, $key, $field=null)
+    public static function arrMapGroup($arr, $key, $field = null)
     {
-
         $map = [];
 
         array_walk(
             $arr,
             function ($val) use (&$map, $key, $field) {
-                if (empty($field)){
+                if (empty($field)) {
                     $map[$val[$key]][] = $val;
-                }elseif (is_array($field)){
+                } elseif (is_array($field)) {
                     $tmpData = [];
-                    foreach ($field as $item){
-                        $tmpData[$item] = $val[$item] ?? '';
+                    foreach ($field as $item) {
+                        if (is_callable($item)){
+                            try {
+                                $cb = $item($val);
+                                foreach ($cb as $cbk => $cbv){
+                                    $tmpData[$cbk] = $cbv ?? '';
+                                }
+                            }catch (\Exception $exception){}
+                        }else{
+                            $tmpData[$item] = $val[$item] ?? '';
+                        }
                     }
                     $map[$val[$key]][] = $tmpData;
-                }else{
+                } else {
                     $map[$val[$key]][] = $val[$field] ?? $val;
                 }
             }
         );
 
         return $map;
-
     }
 
     public static function arrField($arr, $field){
@@ -111,6 +123,49 @@ class Helper
         },ARRAY_FILTER_USE_KEY);
     }
 
+    public static function arrMultiFilter($arr, $expect, $cbMap = [], $alias = []){
+
+        $returnData = [];
+        foreach ($arr as $key => $item){
+
+            if (is_array($item)){
+                if (is_numeric($key)){
+                    $returnData[$key] = Helper::arrMultiFilter($item,$expect,$cbMap,$alias);
+                }elseif (is_string($key)){
+                    if (isset($expect[$key])){
+                        $returnData[$key] = Helper::arrMultiFilter($item,$expect[$key],$cbMap[$key] ?? [],$alias[$key] ?? []);
+                    }
+                }
+            }
+
+            if (is_string($key) && in_array($key, $expect)){
+                $aliasKey = $alias[$key] ?? $key;
+                $returnData[$aliasKey] = isset($cbMap[$key]) && is_callable($cbMap[$key]) ? $cbMap[$key]($item) : $item;
+            }
+
+        }
+
+        return $returnData;
+
+    }
+
+    public static function arrRandom($arr, $limit = null, $exclude = [], $primaryKey = 'id'){
+
+        $validArr = $arr;
+        if (!empty($exclude)){
+            $validArr = array_filter($arr,function ($item) use ($exclude,$primaryKey){
+                return !(isset($item[$primaryKey]) && in_array($item[$primaryKey],$exclude));
+            });
+        }
+
+        $limit = empty($limit) ? count($arr) : $limit;
+
+        shuffle($validArr);
+
+        return array_slice($validArr,0,$limit);
+
+    }
+
     public static function arrSort($data, $column, $sort = SORT_ASC){
         $keysValue = [];
         foreach ($data as $k => $v) {
@@ -118,6 +173,16 @@ class Helper
         }
         array_multisort($keysValue, $sort, $data);
         return $data;
+    }
+
+    public static function arrSortRef($data, $column, $refSort){
+
+        $mapData = self::arrMap($data,$column);
+
+        return array_values(array_filter(array_map(function ($item) use ($mapData){
+            if (isset($mapData[$item])) return $mapData[$item];
+        },$refSort)));
+
     }
 
     public static function password($password,$salt = 'move-x'){
@@ -155,6 +220,63 @@ class Helper
 
         return $returnData;
 
+    }
+
+    public static function durationInc($interval, $unit = Helper::DURATION_UNIT_MINUTE, $datetime=''){
+
+        $baseTimestamp = time();
+
+        if (!empty($datetime)){
+            $baseTimestamp = strtotime($datetime);
+        }
+
+        if (!$baseTimestamp)
+            return false;
+
+        return date('Y-m-d H:i:s',strtotime(sprintf('+%s %s',$interval,$unit),$baseTimestamp));
+    }
+
+    public static function durationDec($interval, $unit = Helper::DURATION_UNIT_MINUTE, $datetime=''){
+
+        $baseTimestamp = time();
+
+        if (!empty($datetime)){
+            $baseTimestamp = strtotime($datetime);
+        }
+
+        if (!$baseTimestamp)
+            return false;
+
+        return date('Y-m-d H:i:s',strtotime(sprintf('-%s %s',$interval,$unit),$baseTimestamp));
+    }
+
+    public static function formatNumber($number){
+        $length = strlen($number);  //数字长度
+        if($length > 8){ //亿单位
+            $str = substr_replace(strstr($number,substr($number,-7),' '),'.',-1,0)."亿";
+        }elseif($length >4){ //万单位
+            //截取前俩为
+            $str = substr_replace(strstr($number,substr($number,-3),' '),'.',-1,0)."万";
+        }else{
+            return $number;
+        }
+        return $str;
+    }
+
+    public static function getClientIp()
+    {
+        $ip = '';
+        if(getenv('HTTP_CLIENT_IP') && strcasecmp(getenv('HTTP_CLIENT_IP'), 'unknown')) {
+            $ip = getenv('HTTP_CLIENT_IP');
+        } elseif(getenv('HTTP_X_FORWARDED_FOR') && strcasecmp(getenv('HTTP_X_FORWARDED_FOR'), 'unknown')) {
+            $ip = getenv('HTTP_X_FORWARDED_FOR');
+        } elseif(getenv('REMOTE_ADDR') && strcasecmp(getenv('REMOTE_ADDR'), 'unknown')) {
+            $ip = getenv('REMOTE_ADDR');
+        } elseif(isset($_SERVER['REMOTE_ADDR']) && $_SERVER['REMOTE_ADDR'] && strcasecmp($_SERVER['REMOTE_ADDR'], 'unknown')) {
+            $ip = $_SERVER['REMOTE_ADDR'];
+        }
+
+        return $ip;
     }
 
 }

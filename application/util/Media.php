@@ -15,12 +15,12 @@ class Media
         if (strpos($url,'http') === 0)
             return $url;
 
-        return config('system.media_domain') . '/data/' . $url;
+        return config('system.media_domain') . '/' . $url;
 
     }
 
     public static function mediaCdn(){
-        return config('system.media_domain') . '/data/';
+        return config('system.media_domain') . '/';
     }
 
 }
